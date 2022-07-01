@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, setState } from 'react'
 import Image from 'next/image'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import TodoItem from './TodoItem'
+import ResetTodo from './reset'
+import ResetCompleted from './resetcompleted'
 
 const useStyles = makeStyles((theme) => ({
 	todo: {
@@ -42,7 +44,7 @@ const Todo = () => {
 	const initialState = [
 		{
 			id: 'vnode',
-			text: 'A simple initial todo',
+			text: 'a simple initial todo',
 			completed: false,
 		},
 	]
@@ -62,13 +64,21 @@ const Todo = () => {
 		const filteredTodos = todos.filter((v) => v !== todo)
 		setTodos(filteredTodos)
 	}
-
 	const updateTodo = (todo) => {
 		const updatedTodos = todos.map((v) => (v.id === todo.id ? todo : v))
 		setTodos(updatedTodos)
 	}
 
 	const completedTodos = todos.filter((todo) => todo.completed)
+	
+	const resetTodo = () => {
+		setTodos(initialState);
+	};	
+    
+	const resetcompleted = () => {
+		const completed = todos.filter((todo) => !todo.completed)
+		setTodos(completed)
+	}
 
 	const handleAddTodo = (e) => {
 		e.preventDefault()
@@ -128,7 +138,13 @@ const Todo = () => {
 					))}
 				</ul>
 			</Paper>
+		<Grid>
+			<ResetTodo
+			  resetTodo={resetTodo}/>
+			<ResetCompleted 
+			  resetcompleted={resetcompleted}/>
 		</Grid>
+	</Grid>
 	)
 }
 
